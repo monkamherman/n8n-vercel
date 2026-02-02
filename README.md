@@ -24,14 +24,14 @@
 
 3. **Configuration automatique :**
    - Render détectera automatiquement le `render.yaml`
-   - Il créera la base de données Supabase
+   - Il utilisera la base de données Supabase externe
    - Il configurera les variables d'environnement
-   - Il créera le cronjob de keep-alive
+   - **Important :** Pas de création de base de données Render (utilise Supabase)
 
 4. **Variables d'environnement configurées :**
 
    ```
-   DATABASE_URL= (automatique depuis Supabase)
+   DATABASE_URL=postgresql://postgres:YjxBJtgTwSlBxnSQ@db.kbeseafmtepfjatzvjnr.supabase.co:5432/postgres
    PORT=5678
    N8N_LOG_LEVEL=info
    GENERIC_TIMEZONE=Europe/Paris

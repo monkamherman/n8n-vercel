@@ -9,9 +9,7 @@ services:
     healthCheckPath: /healthz
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: n8nDB
-          property: connectionString
+        value: postgresql://postgres:YjxBJtgTwSlBxnSQ@db.kbeseafmtepfjatzvjnr.supabase.co:5432/postgres
       - key: PORT
         value: 5678
       - key: N8N_LOG_LEVEL
@@ -26,8 +24,3 @@ services:
         generateValue: true
       - key: WEBHOOK_URL
         value: https://n8n-render-lamachine.onrender.com
-
-databases:
-  - name: n8nDB
-    region: frankfurt
-    plan: free
