@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
     config: {
       database: n8nConfig.DATABASE_URL ? "configured" : "missing",
       encryption: n8nConfig.N8N_ENCRYPTION_KEY ? "configured" : "missing",
+      webhook_url: n8nConfig.WEBHOOK_URL || "not set",
     },
   });
 });
@@ -35,14 +36,25 @@ app.get("/healthz", (req, res) => {
   res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
-// Proxy pour n8n
-app.use("/n8n", (req, res) => {
-  // Pour l'instant, rediriger vers une réponse simple
-  // n8n nécessite un processus complet, ce qui n'est pas possible sur Vercel serverless
+// Route pour les webhooks n8n
+app.post("/webhook/:path", (req, res) => {
+  const { path } = req.params;
   res.json({
-    message: "n8n interface - mode serverless limité",
-    note: "Utilisez les webhooks pour l'automatisation",
-    webhook_url: `${process.env.WEBHOOK_URL}/webhook`,
+    message: "Webhook received",
+    path: path,
+    data: req.body,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Route d'information n8n
+app.get("/n8n", (req, res) => {
+  res.json({
+    message: "n8n interface - mode serverless",
+    version: "1.0.0",
+    features: ["webhooks", "api endpoints"],
+    limitations: ["no background workers", "30s timeout"],
+    webhook_base: `${n8nConfig.WEBHOOK_URL}/webhook`,
   });
 });
 
