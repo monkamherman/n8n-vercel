@@ -27,18 +27,6 @@ services:
       - key: WEBHOOK_URL
         value: https://n8n-render-lamachine.onrender.com
 
-  - type: cron
-    name: keep-alive
-    env: docker
-    schedule: "*/10 * * * *" # Every 10 minutes
-    plan: free
-    buildCommand: "echo 'Keep-alive cron job'"
-    startCommand: "curl -f https://n8n-render-lamachine.onrender.com/keep-alive || exit 1"
-    healthCheckPath: /healthz
-    envVars:
-      - key: CRON_JOB
-        value: "keep-alive"
-
 databases:
   - name: n8nDB
     region: frankfurt

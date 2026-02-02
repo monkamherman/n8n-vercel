@@ -48,7 +48,14 @@
 
 #### Configuration du cronjob Keep-Alive :
 
-Le cronjob s'exécute toutes les 10 minutes pour :
+**Note :** Configurez manuellement le cronjob sur Render après le déploiement :
+
+- Allez dans votre dashboard Render > "New +" > "Cron Job"
+- Schedule : `*/10 * * * *` (toutes les 10 minutes)
+- Command : `curl -f https://votre-projet.onrender.com/keep-alive`
+- Plan : Starter (gratuit pour les cronjobs)
+
+Le cronjob s'exécutera toutes les 10 minutes pour :
 
 - Éviter la mise en veille du service gratuit Render
 - Maintenir n8n actif et disponible
@@ -59,7 +66,7 @@ Le cronjob s'exécute toutes les 10 minutes pour :
 - **Vraiment gratuit** : Render et Supabase plans gratuits
 - **n8n natif** : Pas de contournements ou limitations
 - **Base de données persistante** : Supabase PostgreSQL
-- **Keep-alive automatique** : Cronjob intégré
+- **Keep-alive manuel** : Cronjob à configurer après déploiement
 - **Tunnel webhooks** : Accès externe automatique
 - **Docker natif** : Environnement n8n standard
 
