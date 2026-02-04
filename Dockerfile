@@ -1,7 +1,8 @@
 FROM node:20-alpine
 
-# Install dependencies
-RUN npm install -g n8n@2.4.8 && \
+# Install Python 3 and dependencies
+RUN apk add --no-cache python3 py3-pip make g++ && \
+    npm install -g n8n@2.4.8 && \
     echo "n8n version: $(n8n --version)"
 
 # Set working directory

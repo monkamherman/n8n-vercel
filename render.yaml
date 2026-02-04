@@ -24,3 +24,5 @@ services:
         generateValue: true
       - key: WEBHOOK_URL
         value: https://n8n-a6u8.onrender.com
+      - key: N8N_DISABLE_TASK_RUNNERS
+        value: "true"
