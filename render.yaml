@@ -41,18 +41,6 @@ services:
         value: "2"
       - key: DB_CONNECTION_TIMEOUT
         value: "60000"
-      - key: N8N_DB_TYPE
-        value: postgresql
-      - key: N8N_DB_POSTGRESDB_HOST
-        value: db.kbeseafmtepfjatzvjnr.supabase.co
-      - key: N8N_DB_POSTGRESDB_PORT
-        value: "5432"
-      - key: N8N_DB_POSTGRESDB_DATABASE
-        value: postgres
-      - key: N8N_DB_POSTGRESDB_USER
-        value: postgres
-      - key: N8N_DB_POSTGRESDB_PASSWORD
-        value: YjxBJtgTwSlBxnSQ
 
   - type: worker
     name: n8n-task-runner
@@ -75,18 +63,6 @@ services:
         value: fr
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
-      - key: N8N_DB_TYPE
-        value: postgresql
-      - key: N8N_DB_POSTGRESDB_HOST
-        value: db.kbeseafmtepfjatzvjnr.supabase.co
-      - key: N8N_DB_POSTGRESDB_PORT
-        value: "5432"
-      - key: N8N_DB_POSTGRESDB_DATABASE
-        value: postgres
-      - key: N8N_DB_POSTGRESDB_USER
-        value: postgres
-      - key: N8N_DB_POSTGRESDB_PASSWORD
-        value: YjxBJtgTwSlBxnSQ
 
   - type: web
     name: metabase
