@@ -18,8 +18,6 @@ COPY . .
 # Expose port
 EXPOSE 5678
 
-# Set environment variables for n8n database connection
-ENV N8N_DATABASE_TYPE=postgresdb
-
-# Start n8n - it will use environment variables for DB connection
-CMD ["n8n", "start"]
+# Start n8n with PostgreSQL using environment variables
+# The start script will display config and launch n8n
+CMD ["./start-n8n.sh"]
