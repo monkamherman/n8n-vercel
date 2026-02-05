@@ -89,6 +89,16 @@ Le cronjob s'exécutera toutes les 10 minutes pour :
 - Vérifiez les logs dans le dashboard Render
 - Redémarrez manuellement le service si nécessaire
 
+#### Vérification PostgreSQL :
+
+Si les tables n'apparaissent pas dans Supabase :
+
+1. **Vérifier les logs** : Cherchez "Using database type: postgresdb"
+2. **Tester la connexion** : `curl https://n8n-a6u8.onrender.com/check-db`
+3. **Script de diagnostic** : Voir `FIX_POSTGRESQL.md` pour plus de détails
+
+**Important** : n8n doit utiliser PostgreSQL dès le démarrage, pas SQLite.
+
 ---
 
 ## 📊 Metabase - Visualisation des données

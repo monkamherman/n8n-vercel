@@ -11,6 +11,8 @@ services:
     envVars:
       - key: DATABASE_URL
         value: postgresql://postgres:YjxBJtgTwSlBxnSQ@db.kbeseafmtepfjatzvjnr.supabase.co:5432/postgres
+      - key: DB_TYPE
+        value: postgresdb
       - key: N8N_DB_TYPE
         value: postgresdb
       - key: N8N_DB_POSTGRESDB_HOST

@@ -18,5 +18,8 @@ COPY . .
 # Expose port
 EXPOSE 5678
 
-# Start n8n with explicit database configuration
-CMD ["sh", "-c", "n8n start --database=postgresdb --database-host=$N8N_DB_POSTGRESDB_HOST --database-port=$N8N_DB_POSTGRESDB_PORT --database-name=$N8N_DB_POSTGRESDB_DATABASE --database-user=$N8N_DB_POSTGRESDB_USER --database-password=$N8N_DB_POSTGRESDB_PASSWORD"]
+# Set environment variables for n8n database connection
+ENV N8N_DATABASE_TYPE=postgresdb
+
+# Start n8n - it will use environment variables for DB connection
+CMD ["n8n", "start"]
