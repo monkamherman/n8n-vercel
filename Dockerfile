@@ -18,5 +18,5 @@ COPY . .
 # Expose port
 EXPOSE 5678
 
-# Start n8n with environment variables
-CMD ["sh", "-c", "n8n start"]
+# Start n8n with explicit database configuration
+CMD ["sh", "-c", "n8n start --database=postgresdb"]
