@@ -29,6 +29,10 @@ services:
         generateValue: true
       - key: WEBHOOK_URL
         value: https://n8n-a6u8.onrender.com
+      - key: N8N_COOKIE_DOMAIN
+        value: .onrender.com
+      - key: N8N_HOST
+        value: n8n-a6u8.onrender.com
       - key: N8N_DISABLE_TASK_RUNNERS
         value: "false"
       - key: DB_CONNECTION_POOL_SIZE
@@ -99,7 +103,7 @@ services:
       - key: MB_DB_DBNAME
         value: postgres
       - key: MB_DB_PORT
-        value: 5432
+        value: "5432"
       - key: MB_DB_HOST
         value: db.kbeseafmtepfjatzvjnr.supabase.co
       - key: MB_DB_USER
@@ -110,3 +114,5 @@ services:
         value: https://metabase-a6u8.onrender.com
       - key: JAVA_OPTS
         value: "-Xmx750m"
+      - key: PORT
+        value: "3000"
