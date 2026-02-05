@@ -55,7 +55,12 @@ services:
         value: "2"
       - key: DB_CONNECTION_TIMEOUT
         value: "60000"
-
+      - key: N8N_RUNNERS_ENABLED
+        value: "true"
+      - key: DB_POSTGRESDB_USER
+        value: herman_n8n
+      - key: DB_POSTGRESDB_PASSWORD
+        value: Xenos237
   - type: worker
     name: n8n-task-runner
     env: docker
@@ -118,5 +123,8 @@ services:
         value: https://metabase-a6u8.onrender.com
       - key: JAVA_OPTS
         value: "-Xmx750m"
+      - key: PORT
+        value: "3000"
+
       - key: PORT
         value: "3000"
