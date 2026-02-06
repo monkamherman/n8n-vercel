@@ -28,6 +28,8 @@ services:
         generateValue: true
       - key: WEBHOOK_URL
         value: https://n8n-a6u8.onrender.com
+      - key: DATABASE_URL
+        value: postgresql://postgres:YOUR_PASSWORD@18.198.145.223:5432/postgres?sslmode=require&connect_timeout=30
       - key: DB_POSTGRESDB_HOST
         value: 18.198.145.223
       - key: DB_POSTGRESDB_PORT
@@ -50,6 +52,12 @@ services:
         value: "true"
       - key: DB_FAMILY
         value: "4"
+      - key: PGSSLMODE
+        value: "require"
+      - key: PGCONNECT_TIMEOUT
+        value: "30"
+      - key: PGCLIENTENCODING
+        value: "UTF8"
       - key: N8N_COOKIE_DOMAIN
         value: .onrender.com
 
