@@ -45,7 +45,11 @@ services:
       - key: DB_POSTGRESDB_POOL_SIZE
         value: "2"
       - key: NODE_OPTIONS
-        value: "--dns-result-order=ipv4first"
+        value: "--dns-result-order=ipv4first --dns-family-order=ipv4"
+      - key: N8N_DISABLE_IPV6
+        value: "true"
+      - key: DB_FAMILY
+        value: "4"
       - key: N8N_COOKIE_DOMAIN
         value: .onrender.com
 
