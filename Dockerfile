@@ -6,6 +6,6 @@ ENV N8N_PROTOCOL=https
 ENV N8N_HOST=0.0.0.0
 
 # Forcer IPv4 pour éviter les problèmes de connexion
-ENV NODE_OPTIONS="--dns-result-order=ipv4first --dns-family-order=ipv4"
+ENV NODE_OPTIONS="--dns-result-order=ipv4first"
 ENV N8N_DISABLE_IPV6=true
 ENV DB_FAMILY=4
