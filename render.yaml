@@ -28,12 +28,8 @@ services:
         generateValue: true
       - key: WEBHOOK_URL
         value: https://n8n-a6u8.onrender.com
-      - key: N8N_COOKIE_DOMAIN
-        value: .onrender.com
-      - key: DB_TYPE
-        value: postgresdb
       - key: DB_POSTGRESDB_HOST
-        value: db.kbeseafmtepfjatzvjnr.supabase.co
+        value: 18.198.145.223
       - key: DB_POSTGRESDB_PORT
         value: "5432"
       - key: DB_POSTGRESDB_DATABASE
@@ -41,17 +37,17 @@ services:
       - key: DB_POSTGRESDB_USER
         value: postgres
       - key: DB_POSTGRESDB_PASSWORD
-        sync: false # Définis manuellement dans l'interface Render
-      - key: DB_POSTGRESDB_SCHEMA
-        value: public
+        sync: false
       - key: DB_POSTGRESDB_SSL_ENABLED
         value: "true"
       - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
         value: "false"
       - key: DB_POSTGRESDB_POOL_SIZE
-        value: "5"
-      - key: N8N_MODE
-        value: regular
+        value: "2"
+      - key: NODE_OPTIONS
+        value: "--dns-result-order=ipv4first"
+      - key: N8N_COOKIE_DOMAIN
+        value: .onrender.com
 
   - type: web
     name: metabase
@@ -70,7 +66,7 @@ services:
       - key: MB_DB_PORT
         value: "5432"
       - key: MB_DB_HOST
-        value: aws-0-eu-central-1.pooler.supabase.com
+        value: 18.198.145.223
       - key: MB_DB_USER
         value: postgres
       - key: MB_DB_PASS
