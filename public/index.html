@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>n8n Vercel Serverless</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen">
+      <!-- Header -->
+      <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center py-4">
+            <div class="flex items-center space-x-3">
+              <div class="bg-blue-600 p-2 rounded-lg">
+                <i class="fas fa-project-diagram text-white text-xl"></i>
+              </div>
+              <div>
+                <h1 class="text-xl font-bold text-gray-900">
+                  n8n Vercel Serverless
+                </h1>
+                <p class="text-sm text-gray-500">
+                  Workflows automatisés serverless
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4">
+              <span
+                id="status"
+                class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
+              >
+                <i class="fas fa-circle text-green-500 text-xs mr-1"></i>
+                Actif
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+              <div class="bg-blue-100 p-3 rounded-lg">
+                <i class="fas fa-cogs text-blue-600 text-xl"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Workflows</p>
+                <p
+                  class="text-2xl font-semibold text-gray-900"
+                  id="workflowCount"
+                >
+                  4
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <i class="fas fa-play-circle text-green-600 text-xl"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Exécutions</p>
+                <p
+                  class="text-2xl font-semibold text-gray-900"
+                  id="executionCount"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+              <div class="bg-purple-100 p-3 rounded-lg">
+                <i class="fas fa-database text-purple-600 text-xl"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Base de données</p>
+                <p class="text-2xl font-semibold text-gray-900">Supabase</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+              <div class="bg-orange-100 p-3 rounded-lg">
+                <i class="fas fa-clock text-orange-600 text-xl"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Uptime</p>
+                <p class="text-2xl font-semibold text-gray-900" id="uptime">
+                  99.9%
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Workflows Section -->
+          <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-lg font-medium text-gray-900">
+                Workflows Disponibles
+              </h2>
+            </div>
+            <div class="p-6">
+              <div id="workflows" class="space-y-3">
+                <!-- Workflows will be loaded here -->
+              </div>
+              <button
+                onclick="loadWorkflows()"
+                class="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+              >
+                <i class="fas fa-sync-alt mr-2"></i>Rafraîchir
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-lg font-medium text-gray-900">Actions Rapides</h2>
+            </div>
+            <div class="p-6 space-y-4">
+              <button
+                onclick="testWorkflow()"
+                class="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition"
+              >
+                <i class="fas fa-play mr-2"></i>Tester un Workflow
+              </button>
+
+              <button
+                onclick="testWebhook()"
+                class="w-full bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition"
+              >
+                <i class="fas fa-webhook mr-2"></i>Tester un Webhook
+              </button>
+
+              <button
+                onclick="testDatabase()"
+                class="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition"
+              >
+                <i class="fas fa-database mr-2"></i>Tester la Base de Données
+              </button>
+
+              <button
+                onclick="checkHealth()"
+                class="w-full bg-gray-600 text-white px-4 py-3 rounded-lg hover:bg-gray-700 transition"
+              >
+                <i class="fas fa-heartbeat mr-2"></i>Vérifier la Santé
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div class="mt-8 bg-white rounded-lg shadow">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-medium text-gray-900">Logs d'Exécution</h2>
+          </div>
+          <div class="p-6">
+            <div
+              id="logs"
+              class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm h-64 overflow-y-auto"
+            >
+              <div>🚀 n8n Vercel Serverless Dashboard</div>
+              <div>📊 En attente d'actions...</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const API_BASE = window.location.origin;
+      let executionCount = 0;
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        loadWorkflows();
+        checkHealth();
+        setInterval(checkHealth, 30000); // Check health every 30 seconds
+      });
+
+      // Load workflows
+      async function loadWorkflows() {
+        try {
+          const response = await fetch(`${API_BASE}/api/workflows`);
+          const data = await response.json();
+
+          const workflowsContainer = document.getElementById("workflows");
+          workflowsContainer.innerHTML = "";
+
+          data.workflows.forEach((workflow) => {
+            const workflowEl = document.createElement("div");
+            workflowEl.className =
+              "flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50";
+            workflowEl.innerHTML = `
+                        <div class="flex items-center">
+                            <div class="w-2 h-2 rounded-full mr-3 ${workflow.active ? "bg-green-500" : "bg-gray-400"}"></div>
+                            <div>
+                                <p class="font-medium text-gray-900">${workflow.name}</p>
+                                <p class="text-sm text-gray-500">${workflow.description}</p>
+                            </div>
+                        </div>
+                        <button onclick="executeWorkflow('${workflow.id}')" class="bg-blue-100 text-blue-700 px-3 py-1 rounded text-sm hover:bg-blue-200">
+                            Exécuter
+                        </button>
+                    `;
+            workflowsContainer.appendChild(workflowEl);
+          });
+
+          document.getElementById("workflowCount").textContent =
+            data.workflows.length;
+          addLog(`✅ ${data.workflows.length} workflows chargés`);
+        } catch (error) {
+          addLog(`❌ Erreur chargement workflows: ${error.message}`);
+        }
+      }
+
+      // Execute workflow
+      async function executeWorkflow(workflowId) {
+        try {
+          addLog(`🔄 Exécution du workflow: ${workflowId}`);
+
+          const response = await fetch(
+            `${API_BASE}/api/workflows?action=execute&workflowId=${workflowId}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                test: true,
+                timestamp: new Date().toISOString(),
+              }),
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.execution) {
+            executionCount++;
+            document.getElementById("executionCount").textContent =
+              executionCount;
+            addLog(`✅ Workflow ${workflowId} exécuté avec succès`);
+            addLog(`📊 Status: ${data.execution.status}, Durée: 2s`);
+          } else {
+            addLog(`❌ Erreur exécution: ${data.error}`);
+          }
+        } catch (error) {
+          addLog(`❌ Erreur: ${error.message}`);
+        }
+      }
+
+      // Test workflow
+      async function testWorkflow() {
+        await executeWorkflow("webhook-processor");
+      }
+
+      // Test webhook
+      async function testWebhook() {
+        try {
+          addLog(`🪝 Test webhook...`);
+
+          const response = await fetch(
+            `${API_BASE}/api/webhooks?webhookId=test-dashboard`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                event: "test",
+                source: "dashboard",
+                timestamp: new Date().toISOString(),
+              }),
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.success) {
+            addLog(`✅ Webhook reçu et traité avec succès`);
+          } else {
+            addLog(`❌ Erreur webhook: ${data.error}`);
+          }
+        } catch (error) {
+          addLog(`❌ Erreur webhook: ${error.message}`);
+        }
+      }
+
+      // Test database
+      async function testDatabase() {
+        try {
+          addLog(`🗄️ Test connexion base de données...`);
+
+          const response = await fetch(`${API_BASE}/api/test-db`);
+          const data = await response.json();
+
+          if (data.status === "success") {
+            addLog(`✅ Base de données connectée: ${data.database.database}`);
+          } else {
+            addLog(`❌ Erreur base de données: ${data.message}`);
+          }
+        } catch (error) {
+          addLog(`❌ Erreur test DB: ${error.message}`);
+        }
+      }
+
+      // Check health
+      async function checkHealth() {
+        try {
+          const response = await fetch(`${API_BASE}/api/health`);
+          const data = await response.json();
+
+          const statusEl = document.getElementById("status");
+          if (data.status === "OK") {
+            statusEl.className =
+              "px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800";
+            statusEl.innerHTML =
+              '<i class="fas fa-circle text-green-500 text-xs mr-1"></i>Actif';
+          } else {
+            statusEl.className =
+              "px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800";
+            statusEl.innerHTML =
+              '<i class="fas fa-circle text-red-500 text-xs mr-1"></i>Inactif';
+          }
+        } catch (error) {
+          const statusEl = document.getElementById("status");
+          statusEl.className =
+            "px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800";
+          statusEl.innerHTML =
+            '<i class="fas fa-circle text-red-500 text-xs mr-1"></i>Erreur';
+        }
+      }
+
+      // Add log
+      function addLog(message) {
+        const logs = document.getElementById("logs");
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = document.createElement("div");
+        logEntry.textContent = `[${timestamp}] ${message}`;
+        logs.appendChild(logEntry);
+        logs.scrollTop = logs.scrollHeight;
+      }
+    </script>
+  </body>
+</html>

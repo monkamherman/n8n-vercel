@@ -1,25 +1,26 @@
 {
-  "name": "n8n-render-supabase",
+  "name": "n8n-vercel-serverless",
   "version": "1.0.0",
-  "description": "n8n deployment on Render with Supabase database",
-  "main": "api/n8n.js",
+  "description": "n8n serverless deployment on Vercel with Supabase database",
+  "main": "api/index.js",
   "scripts": {
-    "start": "sh ./start-n8n.sh",
-    "dev": "nodemon --exec 'sh ./start-n8n.sh'",
-    "test-db": "node test-db.js",
-    "test-db-quick": "node test-db.js --quick",
-    "check-db": "node check-db-connection.js"
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "deploy": "vercel --prod",
+    "start": "vercel dev",
+    "test": "node test/test-api.js",
+    "test-db": "node test/test-supabase.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
     "dotenv": "^17.2.3",
-    "express": "^4.18.2",
-    "n8n": "^2.6.3",
-    "pg": "^8.11.0"
+    "crypto": "^1.0.1"
   },
   "devDependencies": {
+    "vercel": "^32.0.0",
     "nodemon": "^3.0.0"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=18.0.0"
   }
 }

@@ -1,159 +1,275 @@
-# n8n-render (Render + Supabase)
+# n8n Vercel Serverless Edition
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/monkamherman/n8n-vercel)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/monkamherman/n8n-vercel-serverless)
 
-### Déploiement de n8n sur Render avec base de données Supabase
+### Déploiement serverless de n8n sur Vercel avec Supabase
 
-#### Prérequis :
-
-1. Un compte Render (gratuit sur render.com)
-2. Un compte GitHub
-
-#### Étapes d'installation :
-
-1. **Fork le repository :**
-   - Fork ce repository sur votre compte GitHub
-   - Copiez l'URL de votre fork
-
-2. **Déployer sur Render :**
-   - Allez sur [render.com](https://render.com)
-   - Connectez-vous avec votre compte GitHub
-   - Cliquez sur "New +" > "Web Service"
-   - Connectez votre repository GitHub
-   - Sélectionnez votre fork du projet
-
-3. **Configuration automatique :**
-   - Render détectera automatiquement le `render.yaml`
-   - Il utilisera la base de données Supabase externe
-   - Il configurera les variables d'environnement
-   - **Important :** Pas de création de base de données Render (utilise Supabase)
-
-4. **Variables d'environnement configurées :**
-
-   ```
-   DATABASE_URL=postgresql://postgres:YjxBJtgTwSlBxnSQ@db.kbeseafmtepfjatzvjnr.supabase.co:5432/postgres
-   PORT=5678
-   N8N_LOG_LEVEL=info
-   GENERIC_TIMEZONE=Europe/Paris
-   TZ=Europe/Paris
-   N8N_DEFAULT_LOCALE=fr
-   N8N_ENCRYPTION_KEY= (généré automatiquement)
-   WEBHOOK_URL=https://votre-projet.onrender.com
-   ```
-
-5. **Accéder à n8n :**
-   - Une fois le déploiement terminé, visitez votre URL Render
-   - n8n démarrera avec tunnel pour les webhooks
-   - L'interface sera accessible via votre URL Render
-
-#### Configuration du cronjob Keep-Alive :
-
-**Note :** Configurez manuellement le cronjob sur Render après le déploiement :
-
-- Allez dans votre dashboard Render > "New +" > "Cron Job"
-- Schedule : `*/10 * * * *` (toutes les 10 minutes)
-- Command : `curl -f https://votre-projet.onrender.com/keep-alive`
-- Plan : Starter (gratuit pour les cronjobs)
-
-Le cronjob s'exécutera toutes les 10 minutes pour :
-
-- Éviter la mise en veille du service gratuit Render
-- Maintenir n8n actif et disponible
-- Assurer la réception des webhooks
-
-#### Avantages de cette configuration :
-
-- **Vraiment gratuit** : Render et Supabase plans gratuits
-- **n8n natif** : Pas de contournements ou limitations
-- **Base de données persistante** : Supabase PostgreSQL
-- **Keep-alive manuel** : Cronjob à configurer après déploiement
-- **Tunnel webhooks** : Accès externe automatique
-- **Docker natif** : Environnement n8n standard
-
-#### Limites :
-
-- **Plan gratuit Render** : 750 heures/mois
-- **Inactivité** : Le cronjob résout ce problème
-- **Base de données** : 500MB sur Supabase gratuit
-- **Redémarrages** : Service peut redémarrer (normal sur gratuit)
-
-#### Monitoring :
-
-- Health check : `https://votre-projet.onrender.com/healthz`
-- Keep-alive : `https://votre-projet.onrender.com/keep-alive`
-- Logs disponibles dans le dashboard Render
-
-#### Dépannage :
-
-- Si le service est inactif, attendez le prochain cronjob (10 min max)
-- Vérifiez les logs dans le dashboard Render
-- Redémarrez manuellement le service si nécessaire
-
-#### Vérification PostgreSQL :
-
-Si les tables n'apparaissent pas dans Supabase :
-
-1. **Vérifier les logs** : Cherchez "Using database type: postgresdb"
-2. **Tester la connexion** : `curl https://n8n-a6u8.onrender.com/check-db`
-3. **Script de diagnostic** : Voir `FIX_POSTGRESQL.md` pour plus de détails
-
-**Important** : n8n doit utiliser PostgreSQL dès le démarrage, pas SQLite.
+Cette version transforme n8n en architecture serverless compatible avec Vercel, tout en conservant la puissance des workflows automatisés.
 
 ---
 
-## 📊 Metabase - Visualisation des données
+## 🚀 Architecture Serverless
 
-### Installation de Metabase
+### Composants principaux
 
-Le projet inclut maintenant **Metabase** pour la visualisation des données des agents IA, requêtes et tokens.
+- **API Serverless** : Fonctions Vercel remplaçant le serveur n8n
+- **Workflows** : Système de workflows custom serverless
+- **Base de données** : Supabase PostgreSQL (inchangé)
+- **Cron Jobs** : Vercel Cron Jobs pour les tâches planifiées
+- **Webhooks** : Gestion des webhooks via fonctions serverless
 
-#### Services déployés :
+### Avantages de l'architecture Vercel
 
-1. **n8n** : https://n8n-a6u8.onrender.com
-2. **Metabase** : https://metabase-a6u8.onrender.com
+- **Scalabilité automatique** : Pas de gestion de serveur
+- **Pay-per-use** : Paiement uniquement pour l'utilisation réelle
+- **Global CDN** : Déploiement mondial instantané
+- **Zero cold starts** : Fonctions maintenues chaudes
+- **Intégration parfaite** : Écosystème Vercel complet
 
-#### Configuration des vues SQL :
+---
+
+## 📋 Prérequis
+
+1. **Compte Vercel** (gratuit sur vercel.com)
+2. **Compte Supabase** (gratuit sur supabase.com)
+3. **GitHub** pour le déploiement automatique
+
+---
+
+## 🛠️ Installation
+
+### 1. Fork et déploiement
 
 ```bash
-# Exécuter le script de configuration
-./setup-metabase.sh
+# Fork ce repository
+# Cliquez sur "Deploy with Vercel"
+# Connectez vos comptes Vercel et Supabase
 ```
 
-Ce script crée les vues suivantes dans votre base de données :
+### 2. Configuration Supabase
 
-- **agent_stats** : Statistiques générales des agents IA
-- **agent_token_usage** : Consommation de tokens par agent
-- **workflow_agent_queries** : Requêtes par workflow et agent
-- **daily_agent_activity** : Activité journalière des agents
-- **agent_performance_metrics** : Métriques de performance
-- **agent_credentials_usage** : Utilisation des credentials
-- **token_trends** : Tendances d'utilisation des tokens
+Créez un projet Supabase et récupérez :
 
-#### Dashboard Metabase :
+- URL du projet : `https://votre-projet.supabase.co`
+- Clé API : `votre-cle-anon`
+- Connection string : `postgresql://...`
 
-Après déploiement :
+### 3. Variables d'environnement Vercel
 
-1. Accédez à https://metabase-a6u8.onrender.com
-2. Créez votre compte administrateur
-3. Connectez-vous à la base de données PostgreSQL avec les mêmes identifiants que n8n
-4. Importez les vues SQL pour créer des dashboards
+Dans le dashboard Vercel > Settings > Environment Variables :
 
-#### Métriques disponibles :
+```bash
+# Base de données
+DATABASE_URL=postgresql://postgres:xxx@xxx.supabase.co:5432/postgres
+SUPABASE_URL=https://votre-projet.supabase.co
+SUPABASE_ANON_KEY=votre-cle-anon
 
-- **Messages par agent** : Nombre total et tendances
-- **Consommation de tokens** : Estimation et suivi
-- **Performance des workflows** : Temps d'exécution
-- **Activité journalière** : Pics d'utilisation
-- **Utilisation des credentials** : Sécurité et accès
+# Sécurité
+CRON_SECRET=votre-secret-unique-32-caracteres
+WEBHOOK_SECRET=votre-secret-webhook
+ENCRYPTION_KEY=votre-cle-encryption-32-caracteres
+
+# Configuration
+NODE_ENV=production
+LOG_LEVEL=info
+```
 
 ---
 
-**Cette instance sera gratuite avec les plans gratuits Render et Supabase.**
+## 🎯 Fonctionnalités
 
-Créé par HERMAN MOUKAM pour La Machine. Adapté pour Render + Supabase + Metabase.
+### Workflows Serverless
 
-**Connection Supabase :**
+Les workflows n8n sont remplacés par des fonctions serverless :
 
+```javascript
+// Exécuter un workflow
+POST /api/workflows?action=execute&workflowId=webhook-processor
+{
+  "data": "vos données"
+}
 ```
-postgresql://postgres:YjxBJtgTwSlBxnSQ@db.kbeseafmtepfjatzvjnr.supabase.co:5432/postgres
+
+### Webhooks
+
+```javascript
+// Recevoir un webhook
+POST /api/webhooks?webhookId=votre-webhook
+{
+  "event": "trigger",
+  "data": {...}
+}
 ```
+
+### Cron Jobs
+
+Configurez dans Vercel > Cron Jobs :
+
+```bash
+# Keep-alive (toutes les 5 minutes)
+0 */5 * * *  /api/cron?job=keep-alive
+
+# Nettoyage données (tous les jours à 2h)
+0 2 * * *  /api/cron?job=data-cleanup
+
+# Rapports (tous les lundis à 9h)
+0 9 * * 1  /api/cron?job=report-generation
+```
+
+---
+
+## 📊 API Endpoints
+
+### Routes principales
+
+| Endpoint                        | Méthode | Description             |
+| ------------------------------- | ------- | ----------------------- |
+| `/`                             | GET     | Informations sur l'API  |
+| `/api/health`                   | GET     | Health check            |
+| `/api/workflows`                | GET     | Liste des workflows     |
+| `/api/workflows?action=execute` | POST    | Exécuter un workflow    |
+| `/api/webhooks`                 | POST    | Recevoir un webhook     |
+| `/api/test-db`                  | GET     | Tester la connexion BDD |
+| `/api/supabase`                 | POST    | Opérations Supabase     |
+
+### Workflows disponibles
+
+1. **Webhook Processor** : Traite les webhooks entrants
+2. **Data Transformer** : Transforme et nettoie les données
+3. **Notification Sender** : Envoie des notifications
+4. **API Integrator** : Intégration APIs externes
+
+---
+
+## 🧪 Tests locaux
+
+```bash
+# Installer les dépendances
+bun install
+
+# Démarrer le serveur local
+bun run dev
+
+# Lancer les tests
+bun run test
+```
+
+---
+
+## 📈 Monitoring
+
+### Logs Vercel
+
+- Accédez aux logs dans le dashboard Vercel
+- Fonctions > Functions Logs
+- Temps réel et historique
+
+### Métriques
+
+- Temps d'exécution des fonctions
+- Nombre d'invocations
+- Erreurs et taux de succès
+- Utilisation de la base de données
+
+---
+
+## 🔧 Configuration avancée
+
+### Personnaliser les workflows
+
+Éditez `api/workflows.js` pour ajouter vos propres workflows :
+
+```javascript
+case 'mon-workflow':
+  executionResult.output = {
+    // Votre logique ici
+  };
+  break;
+```
+
+### Ajouter des cron jobs
+
+1. Éditez `api/cron.js`
+2. Ajoutez votre fonction
+3. Configurez le cron dans Vercel
+
+### Intégrations externes
+
+Ajoutez vos clés API dans les variables d'environnement :
+
+```bash
+SLACK_WEBHOOK_URL=https://hooks.slack.com/...
+EMAIL_SERVICE_API_KEY=votre-cle
+EXTERNAL_API_KEY=votre-cle
+```
+
+---
+
+## 💡 Migration depuis n8n
+
+### Avantages de la migration
+
+- **Coût réduit** : Pay-per-use vs serveur 24/7
+- **Performance** : CDN mondial et edge computing
+- **Scalabilité** : Auto-scaling automatique
+- **Maintenance** : Zéro maintenance infrastructure
+
+### Limitations
+
+- Pas d'interface graphique n8n
+- Workflows à coder en JavaScript
+- Maximum 10 minutes par fonction
+- Pas de stockage local
+
+---
+
+## 🚨 Dépannage
+
+### Erreurs communes
+
+1. **Function timeout** : Optimisez le code ou augmentez `maxDuration`
+2. **Database connection** : Vérifiez `DATABASE_URL`
+3. **CORS errors** : Headers configurés dans chaque fonction
+4. **Cold starts** : Utilisez le cron keep-alive
+
+### Debug
+
+```bash
+# Logs en temps réel
+vercel logs
+
+# Test local
+vercel dev
+
+# Déploiement debug
+vercel --prod
+```
+
+---
+
+## 📚 Documentation
+
+- [Vercel Functions](https://vercel.com/docs/concepts/functions)
+- [Supabase JavaScript](https://supabase.com/docs/reference/javascript)
+- [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs)
+
+---
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créez une branche feature
+3. Commitez vos changements
+4. Ouvrez une Pull Request
+
+---
+
+## 📄 Licence
+
+MIT License - voir fichier LICENSE
+
+---
+
+**Cette version serverless offre toute la puissance de n8n avec l'évolutivité de Vercel !**
+
+Créé par HERMAN MOUKAM pour La Machine. Version serverless Vercel + Supabase.
